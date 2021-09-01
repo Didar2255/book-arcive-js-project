@@ -1,33 +1,37 @@
 const searchButton = document.getElementById('search-button');
 const inputField = document.getElementById('search-input')
+const errorDiv = document.getElementById('error')
 
 const loadData = () => {
     searchButton.addEventListener('click', function () {
         const inputText = inputField.value;
         // clear input data
         inputField.value = '';
-        const url = `http://openlibrary.org/search.json?q=${inputText}`
-        fetch(url)
-            .then(res => res.json())
-            .then(data => getBook(data.docs))
+        if (inputText === '') {
+            errorDiv.innerHTML = `<p class="bg-danger text-center p-3 m-3 fw-bold text-white rounded">No Result Found</p>`
 
+        }
+        else {
+            document.getElementById('error').classList.add('d-none')
+            const url = `http://openlibrary.org/search.json?q=${inputText}`
+
+            fetch(url)
+                .then(res => res.json())
+                .then(data => getBook(data.docs))
+        }
     })
 
 }
 loadData()
 
 const getBook = (books) => {
-    // console.log(books)
+    // total get result
+    const totalResult = document.getElementById('total-result')
+    totalResult.innerText = `Total  ${books.length} Result found`
+
     const displayBook = document.getElementById('book-contaner')
     //clear display result
     displayBook.textContent = '';
-    //error control
-    if (books.numFound === 0) {
-        const errorMessage = document.getElementById('error')
-        errorMessage.innerHTML = `
-      <p>Enter vaild book name</p>
-      `
-    }
 
     books?.forEach(book => {
         console.log(book)
@@ -44,5 +48,6 @@ const getBook = (books) => {
         </div>
         `
         displayBook.appendChild(div)
+
     })
 }
