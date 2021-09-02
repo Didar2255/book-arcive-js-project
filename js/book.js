@@ -25,30 +25,29 @@ const loadData = () => {
 loadData()
 
 const getBook = (books) => {
-
     // total get result
     const totalResult = document.getElementById('total-result')
     totalResult.innerText = `Total  ${books.length} Result found`
-
-    document.getElementById('spinner').classList.add('d-none')
 
     const displayBook = document.getElementById('book-contaner')
     //clear display result
     displayBook.textContent = '';
 
-    books?.forEach(book => {
+    books.forEach(book => {
         const div = document.createElement('div')
         div.classList.add('col')
+        const [firstAuthorName] = [book.author_name]
         div.innerHTML = `
         <div class="card h-100">
             <img src="https://covers.openlibrary.org/b/id/${book.cover_i ? book.cover_i : ''}-M.jpg" class="card-img-top" alt="...">
             <div class="card-body">
-            <h4 class="card-title"> Book name : ${book.title}</h4>
-            <h5>Author name : ${book.author_alternative_name}</h5>
-            <h5>Publish date : ${book.publish_date}</h5>
+            <h4 class="card-title">${book.title}</h4>
+            <p><span class="fw-bold">Author : </span>${firstAuthorName}</p>
+            <p><span class="fw-bold">Publish Year :</span> ${book.first_publish_year}</p>
             </div>
         </div>
         `
         displayBook.appendChild(div)
     })
+    document.getElementById('spinner').classList.add('d-none')
 }
