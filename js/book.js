@@ -2,6 +2,8 @@ const searchButton = document.getElementById('search-button');
 const inputField = document.getElementById('search-input')
 const errorDiv = document.getElementById('error')
 
+// fetch api data 
+
 const loadData = () => {
     searchButton.addEventListener('click', function () {
         const inputText = inputField.value;
@@ -9,7 +11,7 @@ const loadData = () => {
         inputField.value = '';
         // error hendel
         if (inputText === '') {
-            errorDiv.innerHTML = `<p class="bg-danger text-center p-3 m-3 fw-bold text-white rounded">No Result Found</p>`
+            errorDiv.innerHTML = `<p class="bg-danger text-center p-3 m-3 fw-bold text-white rounded ">Please enter book name</p>`
         }
         else {
             document.getElementById('error').classList.add('d-none')
@@ -24,30 +26,40 @@ const loadData = () => {
 }
 loadData()
 
+// display result section
 const getBook = (books) => {
-    // total get result
-    const totalResult = document.getElementById('total-result')
-    totalResult.innerText = `Total  ${books.length} Result found`
+    // erro control
 
-    const displayBook = document.getElementById('book-contaner')
-    //clear display result
-    displayBook.textContent = '';
+    if (!books.length) {
+        const error = document.getElementById('error');
+        error.innerHTML = `<p class="bg-danger text-center p-3 m-3 fw-bold text-white rounded">No Result Found</p>`
+        error.classList.remove('d-none')
+    }
+    else {
+        // total get result
+        const totalResult = document.getElementById('total-result')
+        totalResult.innerText = `Total  ${books.length} Result found`
 
-    books.forEach(book => {
-        const div = document.createElement('div')
-        div.classList.add('col')
-        const [firstAuthorName] = [book.author_name]
-        div.innerHTML = `
-        <div class="card h-100">
-            <img src="https://covers.openlibrary.org/b/id/${book.cover_i ? book.cover_i : ''}-M.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-            <h4 class="card-title">${book.title}</h4>
-            <p><span class="fw-bold">Author : </span>${firstAuthorName}</p>
-            <p><span class="fw-bold">Publish Year :</span> ${book.first_publish_year}</p>
-            </div>
+        const displayBook = document.getElementById('book-contaner')
+        //clear display result
+        displayBook.textContent = '';
+
+        books.forEach(book => {
+            const div = document.createElement('div')
+            div.classList.add('col')
+            const [firstAuthorName] = [book.author_name]
+            div.innerHTML = `
+    <div class="card h-100">
+        <img src="https://covers.openlibrary.org/b/id/${book.cover_i ? book.cover_i : ''}-M.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+        <h4 class="card-title">${book.title}</h4>
+        <p><span class="fw-bold">Author : </span>${firstAuthorName}</p>
+        <p><span class="fw-bold">Publish Year :</span> ${book.first_publish_year}</p>
         </div>
-        `
-        displayBook.appendChild(div)
-    })
+    </div>
+    `
+            displayBook.appendChild(div)
+        })
+    }
     document.getElementById('spinner').classList.add('d-none')
 }
