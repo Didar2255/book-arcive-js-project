@@ -16,7 +16,7 @@ const loadData = () => {
         else {
             document.getElementById('error').classList.add('d-none')
             document.getElementById('spinner').classList.remove('d-none')
-            const url = `http://openlibrary.org/search.json?q=${inputText}`
+            const url = `https://openlibrary.org/search.json?q=${inputText}`
             fetch(url)
                 .then(res => res.json())
                 .then(data => getBook(data.docs))
